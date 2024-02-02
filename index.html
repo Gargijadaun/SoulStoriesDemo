@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulStories Demo</title>
+    <style>
+        body {
+      
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            background: url('./images/BG.jpg') center/cover no-repeat;
+        }
+
+        #logo {
+            width: 47%;
+    position: fixed;
+    top: 14%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    height: auto;
+    z-index: 2;
+        }
+        #text {
+            width: 71%;
+            position: absolute;
+            top: 83%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100%;
+            height: auto;
+            z-index: 2; /* Ensure the logo is above the images */
+        }
+        .image {
+            margin-top: 30%;
+    margin-left: 2%;
+    width: 41%;
+    max-width: 100%;
+    height: auto;
+    position: absolute;
+    z-index: 1;
+        }
+        #image1 {        top: 70px;
+    left: 66px;}
+        #image2 {  top: 125px;
+    left: 212px;}
+        #image3 {     top: 168px;
+    left: -35px; }
+        #image4 {      top: 228px;
+    left: 116px;}
+        #image5 {    top: 322px;
+    left: 11px; }
+        #image6 {        top: 297px;
+    left: 229px;}
+        #image7 {     top: 399px;
+    left: 131px;}
+        #startButton {
+            width: 70%;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+            border: none;
+            /* padding: 10px 20px;
+            font-size: 16px; */
+        }
+
+        #startButton img {
+            max-width: 100%;
+            height: auto;
+        }
+       
+    </style>
+</head>
+<body>
+
+    <img src="./images/logo.png" alt="Logo" id="logo">
+    <img src="./images/text.png" alt="Logo" id="text">
+<div>
+    <img id="image1" src="./images/img01.png" alt="Image 1" class="image">
+    <img id="image2" src="./images/img02.png" alt="Image 2" class="image">
+    <img id="image3" src="./images/img03.png" alt="Image 3" class="image">
+    <img id="image4" src="./images/img04.png" alt="Image 4" class="image">
+    <img id="image5" src="./images/img05.png" alt="Image 5" class="image">
+    <img id="image6" src="./images/img06.png" alt="Image 3" class="image">
+    <img id="image7" src="./images/img07.png" alt="Image 4" class="image">
+   
+</div>
+    <button id="startButton" onclick="nextPage()">
+        <img src="./images/start.png" alt="Button Image">
+    </button>
+
+    <script>
+        const images = [
+            "./images/img04.png",
+            "./images/img01.png",
+            "./images/img03.png",
+            "./images/img02.png",
+            "./images/img05.png",
+            "./images/img07.png",
+            "./images/img06.png",
+      
+            // Add more image URLs as needed
+        ];
+
+        let currentImageIndex = 0;
+        const imageElements = document.querySelectorAll('.image');
+
+        function startSlideshow() {
+            setInterval(() => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                imageElements.forEach((image, index) => {
+                    image.src = images[(currentImageIndex + index) % images.length];
+                });
+            }, 2000); // Change image every 2000 milliseconds (2 seconds)
+        }
+
+        // Start the slideshow automatically
+        startSlideshow();
+
+        function nextPage(){
+            window.location.href = "menu.html";
+        }
+    </script>
+
+</body>
+</html>

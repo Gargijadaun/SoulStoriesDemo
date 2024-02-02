@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Webpage Title</title>
+    <style>
+       body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    background: url('./images/menu1/BG.png') center/cover no-repeat fixed;
+    background-size: 100% 100%;
+}
+
+
+        #back {
+            width: 8%;
+    position: fixed;
+    top: 7%;
+    left: 12%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    height: auto;
+    z-index: 2;
+        }
+     
+      
+        #selfie{
+            width: 46%;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <img src="./images/back.png" alt="Back" id="back" onclick="back()">
+  
+  
+    <!-- <img src="./images/selfie.png" alt="Logo" id="selfie"> -->
+
+    <script>
+        function redirectToPage(page) {
+            window.location.href = page;
+        }
+        function back(){
+            window.location.href = "menu.html";  
+        }
+    </script>
+</html>

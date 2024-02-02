@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Webpage Title</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            background: url('./images/menu3/bg.png') center/cover no-repeat fixed;
+    background-size: 100% 100%;
+        }
+
+        #back {
+            width: 8%;
+    position: fixed;
+    top: 3%;
+    left: 12%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    height: auto;
+    z-index: 2;
+        }
+     
+        #menu {
+            width: 88%;
+    position: absolute;
+    top: 72%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+        }
+
+        .menu-button {
+            margin: 4px;
+            cursor: pointer;
+        }
+
+        #menu img {
+            max-width: 100%;
+            height: auto;
+        }
+        #selfie{
+            width: 46%;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <img src="./images/back.png" alt="Back" id="back" onclick="back()">
+    <div id="menu">
+        <img src="./images/menu3/Image_01.png" alt="Logo" class="menu-button" onclick="redirectToPage('bhattafalls.html')">
+        <img src="./images/menu3/Image_02.png" alt="Logo" class="menu-button" >
+        <img src="./images/menu3/Image_03.png" alt="Logo" class="menu-button">
+       
+    </div>
+  
+    <!-- <img src="./images/selfie.png" alt="Logo" id="selfie"> -->
+
+    <script>
+        function redirectToPage(page) {
+            window.location.href = page;
+        }
+        function back(){
+            window.location.href = "menu.html";  
+        }
+    </script>
+</html>
