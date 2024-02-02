@@ -11,10 +11,10 @@
             padding: 0;
             overflow: hidden;
             height: 100vh;
-            background: url('./images/BG.jpg') center/cover no-repeat;
+            background: url('./images/bgfirst.png') center/cover no-repeat;
         }
 
-        #logo {
+        /* #logo {
             width: 47%;
     position: fixed;
     top: 14%;
@@ -23,8 +23,8 @@
     max-width: 100%;
     height: auto;
     z-index: 2;
-        }
-        #text {
+        } */
+        /* #text {
             width: 71%;
             position: absolute;
             top: 83%;
@@ -33,8 +33,8 @@
             max-width: 100%;
             height: auto;
             z-index: 2; /* Ensure the logo is above the images */
-        }
-        .image {
+        
+        /* .image {
             margin-top: 21%;
     margin-left: 3%;
     width: 32%;
@@ -56,7 +56,7 @@
         #image6 {        top: 229px;
     left: 268px;}
         #image7 {     top: 320px;
-    left: 195px;}
+    left: 195px;} */
         #startButton {
             width: 70%;
             position: absolute;
@@ -78,9 +78,9 @@
 </head>
 <body>
 
-    <img src="./images/logo.png" alt="Logo" id="logo">
-    <img src="./images/text.png" alt="Logo" id="text">
-<div>
+    <!-- <img src="./images/logo.png" alt="Logo" id="logo"> -->
+    <!-- <img src="./images/text.png" alt="Logo" id="text"> -->
+<!-- <div>
     <img id="image1" src="./images/img01.png" alt="Image 1" class="image">
     <img id="image2" src="./images/img02.png" alt="Image 2" class="image">
     <img id="image3" src="./images/img03.png" alt="Image 3" class="image">
@@ -89,7 +89,7 @@
     <img id="image6" src="./images/img06.png" alt="Image 3" class="image">
     <img id="image7" src="./images/img07.png" alt="Image 4" class="image">
    
-</div>
+</div> -->
     <button id="startButton" onclick="nextPage()">
         <img src="./images/start.png" alt="Button Image">
     </button>
@@ -125,7 +125,33 @@
         function nextPage(){
             window.location.href = "menu.html";
         }
-    </script>
+        const backgrounds = [
+            "./images/bg01.png",
+            "./images/bg02.png",
+            "./images/bg03.png",
+           
+            // Add more background image URLs as needed
+        ];
 
+        let currentBackgroundIndex = 0;
+        const bodyElement = document.body;
+
+        function changeBackground() {
+            currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
+            bodyElement.style.background = `url('${backgrounds[currentBackgroundIndex]}') center/cover no-repeat`;
+        }
+
+        function handleClick() {
+            changeBackground();
+        }
+
+        function nextPage() {
+            window.location.href = "menu.html";
+        }
+
+        document.addEventListener('click', handleClick);
+
+    </script>
+   
 </body>
 </html>
