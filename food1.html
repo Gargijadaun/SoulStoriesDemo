@@ -10,7 +10,7 @@
             padding: 0;
             overflow: hidden;
             height: 100vh;
-            background: url('./images/menu5/img01.png') center/cover no-repeat fixed;
+            background: url('./images/menu5/img02.png') center/cover no-repeat fixed;
     background-size: 100% 100%;
         }
 
@@ -25,31 +25,6 @@
     z-index: 2;
         }
      
-        #menu {
-            width: 100%;
-    position: absolute;
-    top: 51%;
-    left: 37%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 2;
-        }
-
-        .menu-button {
-            height: 15%;
-    width: 12%;
-    margin: 4px;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-        }
-
-        #menu img {
-            max-width: 100%;
-            height: auto;
-        }
         #selfie{
             width: 46%;
     position: absolute;
@@ -61,21 +36,16 @@
 </head>
 <body>
     <img src="./images/back.png" alt="Back" id="back" onclick="back()">
-    <div id="menu">
-        <button class="menu-button" onclick="redirectToPage('food1.html')"></button>
-    
-      
-       
-    </div>
+   
   
-    <!-- <img src="./images/selfie.png" alt="Logo" id="selfie"> -->
+    <img src="./images/menu5/addcart.png" alt="Logo" id="selfie" onclick="redirectToPage('food2.html')">
 
     <script>
         function redirectToPage(page) {
             window.location.href = page;
         }
         function back(){
-            window.location.href = "menu.html";  
+            window.location.href = "dietmenu.html";  
         }
     </script>
 </html>

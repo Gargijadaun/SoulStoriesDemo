@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Webpage Title</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            background: url('./images/menu5/img04.png') center/cover no-repeat fixed;
+    background-size: 100% 100%;
+        }
+
+        /* #back {
+            width: 8%;
+    position: fixed;
+    top: 3%;
+    left: 12%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    height: auto;
+    z-index: 2;
+        } */
+     
+        #selfie{
+            width: 100%;
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <!-- <img src="./images/menu5/" alt="Back" id="back" onclick="back()"> -->
+   
+  
+    <img src="./images/menu5/backhome.png" alt="Logo" id="selfie" onclick="redirectToPage('index.html')">
+
+    <script>
+        function redirectToPage(page) {
+            window.location.href = page;
+        }
+        function back(){
+            window.location.href = "food2.html";  
+        }
+    </script>
+</html>
