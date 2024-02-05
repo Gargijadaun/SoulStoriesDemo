@@ -63,11 +63,20 @@
         <img src="./images/menu4.png" alt="Logo" class="menu-button" onclick="redirectToPage('weather.html')">
         <img src="./images/menu5.png" alt="Logo" class="menu-button" onclick="redirectToPage('dietmenu.html')">
     </div>
-    <img src="./images/selfie.png" alt="Logo" id="selfie"  onclick="redirectToPage('selfie.html')">
+    <img src="./images/selfie.png" alt="Logo" id="selfie"  onclick="redirectToPage('https://gargijadaun.github.io/FaceAR/')">
 
     <script>
+        
         function redirectToPage(page) {
-            window.location.href = page;
+            // Check if the page starts with 'http://' or 'https://'
+            if (page.startsWith('http://') || page.startsWith('https://')) {
+                // If it's an external link, navigate to it in the same window
+                window.location.href = page;
+            } else {
+                // If it's an internal link, navigate to it
+                window.location.href = page;
+            }
         }
+    
     </script>
 </html>
