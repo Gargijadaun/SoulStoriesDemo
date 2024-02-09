@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,72 +11,167 @@
             padding: 0;
             overflow: hidden;
             height: 100vh;
-            background: url('./images/menu5/img01.png') center/cover no-repeat fixed;
-    background-size: 100% 100%;
+            background: url('./images/menubg.png') center/cover no-repeat;
+        }
+
+        #logo {
+            width: 85%;
+            position: fixed;
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100%;
+            height: auto;
+            z-index: 2;
+        }
+
+        #menu {
+            width: 90%;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .menu-button {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-button-img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        #add-button1,
+        #add-button2,
+        #add-button3,
+        #add-button4,
+        #add-button5,
+        #add-button6 {
+            top: 70%;
+            left: 54%;
+            width: 37%;
+            position: absolute;
+        }
+
+        #selfie {
+            width: 54%;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         #back {
             width: 8%;
-    position: fixed;
-    top: 3%;
-    left: 12%;
-    transform: translate(-50%, -50%);
-    max-width: 100%;
-    height: auto;
-    z-index: 2;
-        }
-     
-        #menu {
-            width: 100%;
-    position: absolute;
-    top: 51%;
-    left: 37%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 2;
-        }
-
-        .menu-button {
-            height: 15%;
-    width: 12%;
-    margin: 4px;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-        }
-
-        #menu img {
+            position: fixed;
+            top: 3%;
+            left: 12%;
+            transform: translate(-50%, -50%);
             max-width: 100%;
             height: auto;
+            z-index: 2;
         }
-        #selfie{
-            width: 46%;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+
+        @media screen and (min-width: 600px) and (orientation: portrait) {
+            #selfie {
+                width: 32%;
+            }
         }
     </style>
 </head>
+
 <body>
     <img src="./images/back.png" alt="Back" id="back" onclick="back()">
+    <img src="./images/menu5/img1.png" alt="Logo" id="logo">
+
     <div id="menu">
-        <button class="menu-button" onclick="redirectToPage('food1.html')"></button>
-    
-      
-       
+        <!-- Menu Button 1 -->
+        <div class="menu-button">
+            <img src="./images/menu5/food1.png" alt="Logo" class="menu-button-img">
+            <img src="./images/menu5/foodbtn1.png" alt="Logo" id="add-button1" onclick="changeImage(1); saveFoodItem('AMALA VEGGIES');">
+        </div>
+        
+        <!-- Menu Button 2 -->
+        <div class="menu-button">
+            <img src="./images/menu5/food2.png" alt="Logo" class="menu-button-img">
+            <img src="./images/menu5/foodbtn1.png" alt="Logo" id="add-button2" onclick="changeImage(2); saveFoodItem('CHEESY BREAD');">
+        </div>
+
+        <!-- Menu Button 3 -->
+        <div class="menu-button">
+            <img src="./images/menu5/food3.png" alt="Logo" class="menu-button-img">
+            <img src="./images/menu5/foodbtn1.png" alt="Logo" id="add-button3" onclick="changeImage(3); saveFoodItem('SHAWARMA CHICKEN');">
+        </div>
+
+        <!-- Menu Button 4 -->
+        <div class="menu-button">
+            <img src="./images/menu5/food4.png" alt="Logo" class="menu-button-img">
+            <img src="./images/menu5/foodbtn1.png" alt="Logo" id="add-button4" onclick="changeImage(4); saveFoodItem('JOLLOF VEGGIES');">
+        </div>
+
+        <!-- Menu Button 5 -->
+        <div class="menu-button">
+            <img src="./images/menu5/food5.png" alt="Logo" class="menu-button-img">
+            <img src="./images/menu5/foodbtn1.png" alt="Logo" id="add-button5" onclick="changeImage(5); saveFoodItem('FRIED RICE');">
+        </div>
+
+        <!-- Menu Button 6 -->
+        <div class="menu-button">
+            <img src="./images/menu5/food6.png" alt="Logo" class="menu-button-img">
+            <img src="./images/menu5/foodbtn1.png" alt="Logo" id="add-button6" onclick="changeImage(6); saveFoodItem('JOLLOF RICE');">
+        </div>
     </div>
-  
-    <!-- <img src="./images/selfie.png" alt="Logo" id="selfie"> -->
+
+    <img src="./images/menu5/addcart.png" alt="Logo" id="selfie" onclick="redirectToPage('food1.html')">
 
     <script>
+                let lastClickedButtonIndex = null;
         function redirectToPage(page) {
             window.location.href = page;
         }
-        function back(){
-            window.location.href = "menu.html";  
+        function changeImage(buttonIndex) {
+            if (lastClickedButtonIndex !== buttonIndex) {
+                document.getElementById(`add-button${buttonIndex}`).src = "./images/menu5/foodbtn1hov.png";
+                lastClickedButtonIndex = buttonIndex;
+            } else {
+                if (lastClickedButtonIndex !== 6) {
+                    const currentButton = document.getElementById(`add-button${buttonIndex}`);
+                    currentButton.src = (currentButton.src.includes("foodbtn1hov")) ? "./images/menu5/foodbtn1.png" : "./images/menu5/foodbtn1hov.png";
+                }
+            }
         }
+
+        function back() {
+            window.location.href = "menu.html";
+        }
+
+      
+        function saveFoodItem(foodItem) {
+    let savedItems = JSON.parse(localStorage.getItem('clickedFoodItems')) || [];
+
+    // Check if the food item already exists in the list
+    const index = savedItems.indexOf(foodItem);
+    if (index !== -1) {
+        // If the item exists, remove it from the list
+        savedItems.splice(index, 1);
+    } else {
+        // If the item doesn't exist, add it to the list
+        savedItems.push(foodItem);
+    }
+
+    localStorage.setItem('clickedFoodItems', JSON.stringify(savedItems));
+}
+
     </script>
+</body>
+
 </html>

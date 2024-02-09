@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Webpage Title</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            background: url('./images/menu3/img01bg.png') center/cover no-repeat fixed;
+       body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    background: url('./images/menubg.png') center/cover no-repeat fixed;
     background-size: 100% 100%;
-        }
+}
+
 
         #back {
             width: 8%;
@@ -26,10 +27,33 @@
         }
      
       
-        #selfie{
+        #img1{
             width: 46%;
     position: absolute;
-    bottom: 20px;
+    bottom: 88%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+        }
+        #img2{
+            width: 57%;
+    position: absolute;
+    bottom: 53%;
+    left: 31%;
+    transform: translateX(-50%);
+    z-index: 2;
+        }
+        #img3{
+            width: 100%;
+    position: absolute;
+    bottom: 54%;
+    left: 50%;
+    transform: translateX(-50%);
+        }
+        #img4{
+            width: 96%;
+    position: absolute;
+    bottom: 8%;
     left: 50%;
     transform: translateX(-50%);
         }
@@ -39,14 +63,17 @@
     <img src="./images/back.png" alt="Back" id="back" onclick="back()">
   
   
-    <!-- <img src="./images/selfie.png" alt="Logo" id="selfie"> -->
+    <img src="./images/menu3/img1.png" alt="Logo" id="img1">
+    <img src="./images/menu3/img2.png" alt="Logo" id="img2">
+    <img src="./images/menu3/img3.png" alt="Logo" id="img3">
+    <img src="./images/menu3/img4.png" alt="Logo" id="img4">
 
     <script>
         function redirectToPage(page) {
             window.location.href = page;
         }
         function back(){
-            window.location.href = "nearby.html";  
+            window.location.href = "menu.html";  
         }
     </script>
 </html>

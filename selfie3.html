@@ -1,51 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Webpage Title</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            background: url('./images/menu6/img04.png') center/cover no-repeat fixed;
-    background-size: 100% 100%;
-        }
-
-        #home {
-            width: 12%;
-    position: fixed;
-    top: 5%;
-    right: -1%;
-    transform: translate(-50%, -50%);
-    max-width: 100%;
-    height: auto;
-    z-index: 2;
-        }
-     
-        #selfie{
-            width: 21%;
-    position: absolute;
-    bottom: 95px;
-    left: 50%;
-    transform: translateX(-50%);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display Clicked Text</title>
 </head>
 <body>
-    <img src="./images/menu6/home.png" alt="Back" id="home" onclick="redirectToPage('index.html')">
-   
-  
-    <!-- <img src="./images/menu6/home.png" alt="Logo" id="selfie" onclick="redirectToPage('index.html')"> -->
 
-    <script>
-        function redirectToPage(page) {
-            window.location.href = page;
-        }
-        // function back(){
-        //     window.location.href = "menu.html";  
-        // }
-    </script>
+  <h1>Clicked Text</h1>
+  
+  <pre id="clickedText">No button clicked yet.</pre>
+
+  <script>
+    // Retrieve the clicked button's text from local storage
+    var clickedButtonText = localStorage.getItem('clickedButtonText');
+
+    // Display the clicked text
+    var clickedTextElement = document.getElementById('clickedText');
+    if (clickedButtonText) {
+      clickedTextElement.textContent = 'Clicked Text:\n' + clickedButtonText;
+    }
+  </script>
+
+</body>
 </html>

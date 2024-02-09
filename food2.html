@@ -1,51 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Webpage Title</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            background: url('./images/menu5/img03.png') center/cover no-repeat fixed;
-    background-size: 100% 100%;
-        }
-
-        #back {
-            width: 8%;
-    position: fixed;
-    top: 3%;
-    left: 12%;
-    transform: translate(-50%, -50%);
-    max-width: 100%;
-    height: auto;
-    z-index: 2;
-        }
-     
-        #selfie{
-            width: 46%;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-        }
-    </style>
+    <title>Order Confirmation</title>
+    <!-- Add any additional styles or meta tags if needed -->
 </head>
+
 <body>
-    <img src="./images/back.png" alt="Back" id="back" onclick="back()">
-   
-  
-    <img src="./images/menu5/Place a order.png" alt="Logo" id="selfie" onclick="redirectToPage('food3.html')">
+    <h1>Order Confirmation</h1>
+
+    <div id="confirmationContainer">
+        <!-- Display the saved order data here -->
+    </div>
 
     <script>
-        function redirectToPage(page) {
-            window.location.href = page;
+        // Retrieve the saved orders array from localStorage
+        var orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+        // Display all orders on the page
+        if (orders.length > 0) {
+            console.log('Orders:', orders);
+
+            // Loop through each order
+            orders.forEach((orderData, index) => {
+                var orderContainer = document.createElement('div');
+                orderContainer.classList.add('order-container');
+
+                orderContainer.innerHTML = `
+                    <p><strong>Order ${index + 1}:</strong></p>
+                    <p><strong>Name:</strong> ${orderData.name}</p>
+                    <p><strong>Room Number:</strong> ${orderData.roomNumber}</p>
+                    <p><strong>Phone Number:</strong> ${orderData.phoneNumber}</p>
+                    <p><strong>Selected Food Items:</strong></p>
+                    <ul>
+                        ${orderData.selectedFoodItems && Array.isArray(orderData.selectedFoodItems)
+                            ? orderData.selectedFoodItems.map(item => `<li>${item.name} - Quantity: ${item.quantity}</li>`).join('')
+                            : '<li>No selected food items</li>'
+                        }
+                    </ul>
+                    <button onclick="deleteOrder(${index})">Done Order</button>
+                `;
+
+                document.getElementById("confirmationContainer").appendChild(orderContainer);
+            });
         }
-        function back(){
-            window.location.href = "food1.html";  
+
+        function deleteOrder(index) {
+            // Retrieve the saved orders array from localStorage
+            var orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+            // Remove the order at the specified index
+            orders.splice(index, 1);
+
+            // Save the updated orders array back to localStorage
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Reload the page to reflect the changes
+            location.reload();
         }
     </script>
+</body>
+
 </html>

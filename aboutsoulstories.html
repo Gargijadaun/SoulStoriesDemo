@@ -10,7 +10,7 @@
     padding: 0;
     overflow: hidden;
     height: 100vh;
-    background: url('./images/menu1/BG.png') center/cover no-repeat fixed;
+    background: url('./images/menubg.png') center/cover no-repeat fixed;
     background-size: 100% 100%;
 }
 
@@ -27,10 +27,33 @@
         }
      
       
-        #selfie{
+        #img1{
             width: 46%;
     position: absolute;
-    bottom: 20px;
+    bottom: 88%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+        }
+        #img2{
+            width: 57%;
+    position: absolute;
+    bottom: 53%;
+    left: 31%;
+    transform: translateX(-50%);
+    z-index: 2;
+        }
+        #img3{
+            width: 100%;
+    position: absolute;
+    bottom: 54%;
+    left: 50%;
+    transform: translateX(-50%);
+        }
+        #img4{
+            width: 96%;
+    position: absolute;
+    bottom: 12%;
     left: 50%;
     transform: translateX(-50%);
         }
@@ -40,7 +63,10 @@
     <img src="./images/back.png" alt="Back" id="back" onclick="back()">
   
   
-    <!-- <img src="./images/selfie.png" alt="Logo" id="selfie"> -->
+    <img src="./images/menu1/img01.png" alt="Logo" id="img1">
+    <img src="./images/menu1/img02.png" alt="Logo" id="img2">
+    <img src="./images/menu1/img03.png" alt="Logo" id="img3">
+    <img src="./images/menu1/img04.png" alt="Logo" id="img4">
 
     <script>
         function redirectToPage(page) {

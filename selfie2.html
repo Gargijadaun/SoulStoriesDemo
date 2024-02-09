@@ -1,51 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Webpage Title</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            background: url('./images/menu6/img03.png') center/cover no-repeat fixed;
-    background-size: 100% 100%;
-        }
-
-        #back {
-            width: 8%;
-    position: fixed;
-    top: 3%;
-    left: 12%;
-    transform: translate(-50%, -50%);
-    max-width: 100%;
-    height: auto;
-    z-index: 2;
-        }
-     
-        #selfie{
-            width: 21%;
-    position: absolute;
-    bottom: 95px;
-    left: 50%;
-    transform: translateX(-50%);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buttons with Specific Text</title>
 </head>
 <body>
-    <img src="./images/back.png" alt="Back" id="back" onclick="back()">
-   
-  
-    <img src="./images/menu6/capture.png" alt="Logo" id="selfie" onclick="redirectToPage('selfie3.html')">
 
-    <script>
-        function redirectToPage(page) {
-            window.location.href = page;
-        }
-        function back(){
-            window.location.href = "menu.html";  
-        }
-    </script>
+  <h1>Click a Button to Send Text</h1>
+  
+  <!-- Buttons with specific text -->
+  <button onclick="sendText('Button 1', this)">Button 1</button>
+  <button onclick="sendText('Button 2', this)">Button 2</button>
+  <button onclick="sendText('Button 3', this)">Button 3</button>
+
+  <script>
+    function sendText(text, button) {
+      // Check if the button has already been clicked
+      if (button.disabled) {
+        alert("Button already clicked!");
+        return;
+      }
+
+      // Save the clicked button's text in local storage
+      var clickedText = localStorage.getItem('clickedButtonText') || '';
+      clickedText += text + '\n';
+      localStorage.setItem('clickedButtonText', clickedText);
+
+      // Disable the button to prevent multiple clicks
+      button.disabled = true;
+    }
+  </script>
+
+</body>
 </html>

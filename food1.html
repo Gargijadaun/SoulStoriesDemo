@@ -1,51 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Webpage Title</title>
     <style>
+        #increaseBtn,
+        #decreaseBtn {
+            font-size: 18px;
+            color: white;
+            background-color: #3498db;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #increaseBtn:hover,
+        #decreaseBtn:hover {
+            background-color: #2980b9;
+        }
+
+        #quantity {
+            font-size: 18px;
+            color: black;
+            text-align: center;
+            position: absolute;
+            top: 25%;
+            left:107%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
             height: 100vh;
-            background: url('./images/menu5/img02.png') center/cover no-repeat fixed;
-    background-size: 100% 100%;
+            background: url('./images/menu5/bg.png') center/cover no-repeat fixed;
+            background-size: 100% 100%;
         }
 
         #back {
             width: 8%;
-    position: fixed;
-    top: 3%;
-    left: 12%;
-    transform: translate(-50%, -50%);
-    max-width: 100%;
-    height: auto;
-    z-index: 2;
+            position: fixed;
+            top: 3%;
+            left: 12%;
+            transform: translate(-50%, -50%);
+            max-width: 100%;
+            height: auto;
+            z-index: 2;
         }
-     
-        #selfie{
+
+        #selfie {
             width: 46%;
-    position: absolute;
-    bottom: 20px;
+    position: fixed;
+    bottom: 0%;
     left: 50%;
     transform: translateX(-50%);
         }
+
+        #topText {
+            font-size: 24px;
+            color: white;
+            text-align: center;
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        #displayText {
+            position: absolute;
+            top: 31%;
+            left: 10%;
+        }
+#foodItemsContainer{
+        top: 30%;
+    position: absolute;
+    left: 10%;
+}
+
+#orderFormContainer {
+    text-align: center;
+    top: 58%;
+    position: fixed;
+    left: 5%;
+        }
+
+        #orderForm {
+            display: inline-block;
+            text-align: left;
+        }
+
+        #orderForm label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        #orderForm input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+        }
+
+        #orderForm button {
+    left: 30%;
+    width: 36%;
+    height: 4%;
+    top: 91%;
+    position: fixed;
+    background-image: url('images/menu5/Place a order.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+       
     </style>
 </head>
 <body>
+    <div id="foodItemsContainer"></div>
+
     <img src="./images/back.png" alt="Back" id="back" onclick="back()">
-   
-  
-    <img src="./images/menu5/addcart.png" alt="Logo" id="selfie" onclick="redirectToPage('food2.html')">
+
+    <div id="orderFormContainer">
+        <form id="orderForm" onsubmit="saveOrder(); return false;">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="roomNumber">Room Number:</label>
+            <input type="text" id="roomNumber" required>
+
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" required>
+
+            <button type="submit"></button>
+        </form>
+    </div>
+
+    <!-- <img src="./images/menu5/Place a order.png" alt="Logo" id="selfie" onclick="redirectToPage('food2.html')"> -->
 
     <script>
+    function saveOrder() {
+    var name = document.getElementById("name").value;
+    var roomNumber = document.getElementById("roomNumber").value;
+    var phoneNumber = document.getElementById("phoneNumber").value;
+
+    // Get the selected food items and quantities from the page
+    const selectedFoodItems = [];
+    const foodItemElements = document.querySelectorAll('.food-item');
+    foodItemElements.forEach(foodItemElement => {
+        const foodItemName = foodItemElement.getAttribute('data-food-item');
+        const quantity = parseInt(foodItemElement.querySelector('.quantity').innerText);
+        selectedFoodItems.push({ name: foodItemName, quantity: quantity });
+    });
+
+    // Retrieve the existing orders array from localStorage
+    var orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+    // Create a new order object
+    var orderData = {
+        name: name || '',
+        roomNumber: roomNumber || '',
+        phoneNumber: phoneNumber || '',
+        selectedFoodItems: selectedFoodItems
+    };
+
+    // Add the new order to the orders array
+    orders.push(orderData);
+
+    // Save the updated orders array back to localStorage
+    localStorage.setItem('orders', JSON.stringify(orders));
+
+    // Clear the content of the foodItemsContainer
+    document.getElementById("foodItemsContainer").innerHTML = '';
+    localStorage.removeItem('clickedFoodItems');
+    // Redirect to the order confirmation page
+    window.location.href = "food3.html";
+ 
+  
+
+}
+
+
         function redirectToPage(page) {
             window.location.href = page;
         }
-        function back(){
-            window.location.href = "dietmenu.html";  
+
+        function back() {
+            window.location.href = "dietmenu.html";
         }
+
+        function increaseQuantity(btn) {
+            var quantityElement = btn.parentElement.querySelector(".quantity");
+            var currentQuantity = parseInt(quantityElement.innerText);
+            quantityElement.innerText = currentQuantity + 1;
+        }
+
+        function decreaseQuantity(btn) {
+            var quantityElement = btn.parentElement.querySelector(".quantity");
+            var currentQuantity = parseInt(quantityElement.innerText);
+            if (currentQuantity > 1) {
+                quantityElement.innerText = currentQuantity - 1;
+            }
+        }
+
+        function createFoodItem(foodItem) {
+            var foodItemDiv = document.createElement("div");
+            foodItemDiv.classList.add("food-item");
+            foodItemDiv.setAttribute('data-food-item', foodItem);
+
+            foodItemDiv.innerHTML = `
+                <div class="displayText">${foodItem}
+                    <button class="decreaseBtn" onclick="decreaseQuantity(this)">-</button>
+                    <span class="quantity">1</span>
+                    <button class="increaseBtn" onclick="increaseQuantity(this)">+</button>
+                </div>
+            `;
+
+            document.getElementById("foodItemsContainer").appendChild(foodItemDiv);
+        }
+
+        function displaySavedFoodItems() {
+            const savedItems = JSON.parse(localStorage.getItem('clickedFoodItems')) || [];
+            savedItems.forEach(foodItem => {
+                createFoodItem(foodItem);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            displaySavedFoodItems();
+        });
     </script>
+</body>
 </html>
