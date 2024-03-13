@@ -1,36 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buttons with Specific Text</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overlay Camera Capture</title>
+<style>
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('overlay_image.jpg'); /* Replace 'overlay_image.jpg' with the path to your overlay image */
+    background-size: cover;
+    z-index: 1;
+  }
+  #video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+  #capture-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+</style>
 </head>
 <body>
 
-  <h1>Click a Button to Send Text</h1>
-  
-  <!-- Buttons with specific text -->
-  <button onclick="sendText('Button 1', this)">Button 1</button>
-  <button onclick="sendText('Button 2', this)">Button 2</button>
-  <button onclick="sendText('Button 3', this)">Button 3</button>
+<div id="overlay"></div>
 
-  <script>
-    function sendText(text, button) {
-      // Check if the button has already been clicked
-      if (button.disabled) {
-        alert("Button already clicked!");
-        return;
-      }
+<video id="video" width="640" height="480" autoplay></video>
 
-      // Save the clicked button's text in local storage
-      var clickedText = localStorage.getItem('clickedButtonText') || '';
-      clickedText += text + '\n';
-      localStorage.setItem('clickedButtonText', clickedText);
+<button id="capture-btn">Capture Photo</button>
 
-      // Disable the button to prevent multiple clicks
-      button.disabled = true;
-    }
-  </script>
+<script>
+  const video = document.getElementById('video');
+  const captureButton = document.getElementById('capture-btn');
+
+  // Get user media
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+    })
+    .catch(error => {
+      console.error('Error accessing the camera: ', error);
+    });
+
+  // Capture photo
+  captureButton.addEventListener('click', () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Draw overlay
+    const overlayImage = new Image();
+    overlayImage.src = './images/Photo_frame.png'; // Replace 'overlay_image.jpg' with the path to your overlay image
+    overlayImage.onload = () => {
+      context.drawImage(overlayImage, 0, 0, canvas.width, canvas.height);
+      
+      // Convert canvas to data URL
+      const dataUrl = canvas.toDataURL('image/jpeg');
+
+      // Create download link
+      const downloadLink = document.createElement('a');
+      downloadLink.href = dataUrl;
+      downloadLink.download = 'overlayed_image.jpg';
+      downloadLink.innerHTML = 'Download';
+      document.body.appendChild(downloadLink);
+
+      // Click the download link automatically
+      downloadLink.click();
+
+      // Clean up
+      document.body.removeChild(downloadLink);
+    };
+  });
+</script>
 
 </body>
 </html>
