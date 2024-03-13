@@ -102,15 +102,17 @@
     display: none;
 }
 
-    #captured-photo{
-        width: 81vw;
+   #captured-photo {
+    width: 81vw;
     height: 56vh;
     object-fit: cover;
     position: absolute;
     top: 69px;
     left: 35px;
     z-index: 1;
-    }
+    transform: scaleX(-1); /* Flip horizontally */
+}
+
     .overlay-buttons {
         position: absolute;
         bottom: 10px;
