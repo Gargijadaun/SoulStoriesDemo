@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
 <title>Face Filter Camera</title>
 <style>
     body {
@@ -12,6 +14,7 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        overflow: hidden; /* Hide overflow to prevent scrolling */
     }
     #video {
         width: 100%;
@@ -43,15 +46,20 @@
         border: none;
         cursor: pointer;
     }
-    #capture-btn img,
+
     #share-btn img,
     #download-btn img,
     #close-btn img, #back-btn img  {
         width: 45px;
         height: 45px;
     }
+    #capture-btn img
+     {
+        width: 80px;
+        height: 80px;
+    }
     #capture-btn {
-        bottom: 20px;
+        bottom: 135px;
         left: 50%;
         transform: translateX(-50%);
     }
@@ -82,32 +90,24 @@
         z-index: 3;
     }
     #overlay-image {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 3;
-        display: none;
-    }
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: none;
+}
+
     #captured-photo{
-        
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
-    #overlay-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
+        width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
     }
     .overlay-buttons {
         position: absolute;
@@ -127,7 +127,9 @@
 </style>
 </head>
 <body>
-<video id="video" autoplay></video>
+    <video id="video" autoplay style="transform: scaleX(1);"></video>
+
+
 <canvas id="canvas" width="400" height="300"></canvas>
 <button id="capture-btn"><img src="./images/capture.png" alt="Capture"></button>
 <button id="share-btn"><img src="./images/sharebtn.png" alt="Share"></button>
@@ -166,19 +168,30 @@
             console.error('Error accessing the camera:', err);
         });
 
-    document.getElementById('capture-btn').addEventListener('click', function() {
-        const context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        context.drawImage(overlayImage, 0, 0, canvas.width, canvas.height); // Draw overlay onto canvas
+        document.getElementById('capture-btn').addEventListener('click', function() {
+    // Hide the buttons temporarily
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.style.display = 'none';
+    });
+
+    // Capture the screenshot
+    html2canvas(document.body).then(function(canvas) {
         const imgData = canvas.toDataURL('image/png');
         capturedPhoto.src = imgData;
+        overlayImage.style.display = 'block';
         photoContainer.style.display = 'block';
         sharePhotoBtn.style.display = 'block';
         downloadPhotoBtn.style.display = 'block';
         capture.style.display = 'none';
         closeBtn.style.display = 'block';
 
+        // Show the buttons again
+        buttons.forEach(button => {
+            button.style.display = 'block';
+        });
     });
+});
 
     closeBtn.addEventListener('click', function() {
         photoContainer.style.display = 'none';
@@ -205,13 +218,34 @@
     });
 
     downloadPhotoBtn.addEventListener('click', function() {
-        const photoUrl = capturedPhoto.src;
-        const a = document.createElement('a');
-        a.href = photoUrl;
-        a.download = 'captured_photo.png';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        var photoContainer = document.getElementById('photo-container');
+
+// Create a new canvas element
+var canvas = document.createElement('canvas');
+canvas.width = photoContainer.offsetWidth;
+canvas.height = photoContainer.offsetHeight;
+var context = canvas.getContext('2d');
+
+// Draw the overlay image
+var overlayImage = document.getElementById('overlay-image');
+context.drawImage(overlayImage, 0, 0);
+
+// Draw the captured photo
+var capturedPhoto = document.getElementById('captured-photo');
+context.drawImage(capturedPhoto, 0, 0);
+
+// Convert the canvas to a data URL representing a PNG image
+var dataURL = canvas.toDataURL('image/png');
+
+// Create a temporary anchor element to trigger the download
+var downloadLink = document.createElement('a');
+downloadLink.href = dataURL;
+downloadLink.download = 'photo.png';
+
+// Simulate a click on the anchor element to trigger the download
+document.body.appendChild(downloadLink);
+downloadLink.click();
+document.body.removeChild(downloadLink);
     });
 </script>
 </body>
