@@ -101,12 +101,12 @@
 }
 
     #captured-photo{
-        width: 100vw;
-    height: 100vh;
+        width: 68vw;
+    height: 56vh;
     object-fit: cover;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 83px;
+    left: 78px;
     z-index: 1;
     }
     .overlay-buttons {
@@ -202,20 +202,38 @@
     });
 
     sharePhotoBtn.addEventListener('click', function() {
-        if (navigator.share) {
-            navigator.share({
-                title: 'Shared from Face Filter Camera',
-                text: 'Check out my photo!',
-                url: capturedPhoto.src
-            }).then(() => {
-                console.log('Shared successfully');
-            }).catch((error) => {
-                console.error('Error sharing:', error);
-            });
-        } else {
-            console.error('navigator.share not supported');
-        }
-    });
+    // Create a canvas element to draw the contents of the photo container
+    const containerWidth = photoContainer.offsetWidth;
+    const containerHeight = photoContainer.offsetHeight;
+    const containerCanvas = document.createElement('canvas');
+    containerCanvas.width = containerWidth;
+    containerCanvas.height = containerHeight;
+    const containerContext = containerCanvas.getContext('2d');
+
+    // Draw the overlay image onto the canvas
+  
+
+    // Draw the captured photo onto the canvas
+    containerContext.drawImage(capturedPhoto, 0, 0, containerWidth, containerHeight);
+    containerContext.drawImage(overlayImage, 0, 0, containerWidth, containerHeight);
+    // Convert the canvas content to a data URL representing a PNG image
+    const dataURL = containerCanvas.toDataURL('image/png');
+
+    // Share the data URL
+    if (navigator.share) {
+        navigator.share({
+            title: 'Shared from Face Filter Camera',
+            text: 'Check out my photo!',
+            url: dataURL
+        }).then(() => {
+            console.log('Shared successfully');
+        }).catch((error) => {
+            console.error('Error sharing:', error);
+        });
+    } else {
+        console.error('navigator.share not supported');
+    }
+});
 
     downloadPhotoBtn.addEventListener('click', function() {
     // Create a canvas element to draw the contents of the photo container
