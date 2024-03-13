@@ -1,51 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Webpage Title</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            background: url('./images/menu6/img01.png') center/cover no-repeat fixed;
-    background-size: 100% 100%;
-        }
-
-        #back {
-            width: 8%;
-    position: fixed;
-    top: 3%;
-    left: 12%;
-    transform: translate(-50%, -50%);
-    max-width: 100%;
-    height: auto;
-    z-index: 2;
-        }
-     
-        #selfie{
-            width: 21%;
-    position: absolute;
-    bottom: 95px;
-    left: 50%;
-    transform: translateX(-50%);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Filter Camera</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    #video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    #canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        display: none;
+    }
+    #capture-btn,#back-btn
+   {
+        position: absolute;
+        z-index: 2;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+    #share-btn,
+    #download-btn,
+    #close-btn {
+        display: none;
+        position: absolute;
+        z-index: 5;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+    #capture-btn img,
+    #share-btn img,
+    #download-btn img,
+    #close-btn img, #back-btn img  {
+        width: 45px;
+        height: 45px;
+    }
+    #capture-btn {
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    #share-btn {
+        bottom: 20px;
+        left: 20px;
+    }
+    #download-btn {
+        bottom: 20px;
+        right: 20px;
+    }
+    #close-btn {
+        top: 20px;
+        right: 20px;
+    }
+    #back-btn {
+        top: 20px;
+        left: 20px;
+    }
+    
+    #photo-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        z-index: 3;
+    }
+    #overlay-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        display: none;
+    }
+    #captured-photo{
+        
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    #overlay-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+    .overlay-buttons {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .overlay-buttons button {
+        margin: 0 10px;
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+</style>
 </head>
 <body>
-    <img src="./images/back.png" alt="Back" id="back" onclick="back()">
+<video id="video" autoplay></video>
+<canvas id="canvas" width="400" height="300"></canvas>
+<button id="capture-btn"><img src="./images/capture.png" alt="Capture"></button>
+<button id="share-btn"><img src="./images/sharebtn.png" alt="Share"></button>
+<button id="download-btn"><img src="./images/download.png" alt="Download"></button>
+<button id="close-btn"><img src="./images/closebtn.png" alt="Close"></button>
+<button id="back-btn"><img src="./images/back.png" onclick="back()" alt="Back"></button>
+<div id="photo-container">
+    <img id="overlay-image" src="./images/Photo_frame.png">
+    <img id="captured-photo" src="">
    
-  
-    <img src="./images/menu6/capture.png" alt="Logo" id="selfie" onclick="redirectToPage('selfie1.html')">
-
-    <script>
-        function redirectToPage(page) {
-            window.location.href = page;
-        }
-        function back(){
+    <div class="overlay-buttons">
+        <!-- <button id="share-photo-btn">Share</button>
+        <button id="download-photo-btn">Download</button> -->
+    </div>
+</div>
+<script>
+     function back(){
             window.location.href = "menu.html";  
         }
-    </script>
+    const capture = document.getElementById('capture-btn');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const photoContainer = document.getElementById('photo-container');
+    const closeBtn = document.getElementById('close-btn');
+    const capturedPhoto = document.getElementById('captured-photo');
+    const sharePhotoBtn = document.getElementById('share-btn');
+    const downloadPhotoBtn = document.getElementById('download-btn');
+    const overlayImage = document.getElementById('overlay-image');
+    
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch(function(err) {
+            console.error('Error accessing the camera:', err);
+        });
+
+    document.getElementById('capture-btn').addEventListener('click', function() {
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        context.drawImage(overlayImage, 0, 0, canvas.width, canvas.height); // Draw overlay onto canvas
+        const imgData = canvas.toDataURL('image/png');
+        capturedPhoto.src = imgData;
+        photoContainer.style.display = 'block';
+        sharePhotoBtn.style.display = 'block';
+        downloadPhotoBtn.style.display = 'block';
+        capture.style.display = 'none';
+        closeBtn.style.display = 'block';
+
+    });
+
+    closeBtn.addEventListener('click', function() {
+        photoContainer.style.display = 'none';
+        sharePhotoBtn.style.display = 'none';
+        downloadPhotoBtn.style.display = 'none';
+        capture.style.display = 'block';
+        closeBtn.style.display = 'none';
+    });
+
+    sharePhotoBtn.addEventListener('click', function() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Shared from Face Filter Camera',
+                text: 'Check out my photo!',
+                url: capturedPhoto.src
+            }).then(() => {
+                console.log('Shared successfully');
+            }).catch((error) => {
+                console.error('Error sharing:', error);
+            });
+        } else {
+            console.error('navigator.share not supported');
+        }
+    });
+
+    downloadPhotoBtn.addEventListener('click', function() {
+        const photoUrl = capturedPhoto.src;
+        const a = document.createElement('a');
+        a.href = photoUrl;
+        a.download = 'captured_photo.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+</script>
+</body>
 </html>
