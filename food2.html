@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation</title>
-    <!-- Add any additional styles or meta tags if needed -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -15,50 +15,70 @@
         <!-- Display the saved order data here -->
     </div>
 
+  
     <script>
-        // Retrieve the saved orders array from localStorage
-        var orders = JSON.parse(localStorage.getItem('orders')) || [];
+        document.addEventListener('DOMContentLoaded', function () {
+            loadExcelData();
+        });
 
-        // Display all orders on the page
-        if (orders.length > 0) {
-            console.log('Orders:', orders);
+        function loadExcelData() {
+            // Replace 'mydata (5).xlsx' with the correct path to your Excel file
+            var filePath = 'mydata (5).xlsx';
 
-            // Loop through each order
-            orders.forEach((orderData, index) => {
-                var orderContainer = document.createElement('div');
-                orderContainer.classList.add('order-container');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', filePath, true);
+            xhr.responseType = 'arraybuffer';
 
-                orderContainer.innerHTML = `
-                    <p><strong>Order ${index + 1}:</strong></p>
-                    <p><strong>Name:</strong> ${orderData.name}</p>
-                    <p><strong>Room Number:</strong> ${orderData.roomNumber}</p>
-                    <p><strong>Phone Number:</strong> ${orderData.phoneNumber}</p>
-                    <p><strong>Selected Food Items:</strong></p>
-                    <ul>
-                        ${orderData.selectedFoodItems && Array.isArray(orderData.selectedFoodItems)
-                            ? orderData.selectedFoodItems.map(item => `<li>${item.name} - Quantity: ${item.quantity}</li>`).join('')
-                            : '<li>No selected food items</li>'
-                        }
-                    </ul>
-                    <button onclick="deleteOrder(${index})">Done Order</button>
-                `;
+            xhr.onload = function (e) {
+                var arrayBuffer = xhr.response;
+                if (arrayBuffer) {
+                    var data = new Uint8Array(arrayBuffer);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheetName = workbook.SheetNames[0];
+                    var sheet = workbook.Sheets[sheetName];
 
-                document.getElementById("confirmationContainer").appendChild(orderContainer);
-            });
+                    var orders = XLSX.utils.sheet_to_json(sheet, { raw: false });
+                    displayOrders(orders);
+                } else {
+                    console.error('Error loading Excel file:', e);
+                }
+            };
+
+            xhr.send();
         }
 
+        function displayOrders(orders) {
+    var confirmationContainer = document.getElementById("confirmationContainer");
+    confirmationContainer.innerHTML = ""; // Clear existing content
+
+    if (orders.length > 0) {
+        orders.forEach((orderData, index) => {
+            var orderContainer = document.createElement('div');
+            orderContainer.classList.add('order-container');
+
+            orderContainer.innerHTML = `
+                <p><strong>Order ${index + 1}:</strong></p>
+                <p><strong>Name:</strong> ${orderData.name}</p>
+                <p><strong>Room Number:</strong> ${orderData.roomNumber}</p>
+                <p><strong>Phone Number:</strong> ${orderData.phoneNumber}</p>
+                <p><strong>Selected Food Items:</strong></p>
+                <ul>
+                    ${orderData.selectedFoodItems && Array.isArray(orderData.selectedFoodItems)
+                        ? orderData.selectedFoodItems.map(item => `<li>${item.name} - Quantity: ${item.quantity}</li>`).join('')
+                        : '<li>No selected food items</li>'
+                    }
+                </ul>
+                <button onclick="deleteOrder(${index})">Done Order</button>
+            `;
+
+            confirmationContainer.appendChild(orderContainer);
+        });
+    }
+}
+
         function deleteOrder(index) {
-            // Retrieve the saved orders array from localStorage
-            var orders = JSON.parse(localStorage.getItem('orders')) || [];
-
-            // Remove the order at the specified index
-            orders.splice(index, 1);
-
-            // Save the updated orders array back to localStorage
-            localStorage.setItem('orders', JSON.stringify(orders));
-
-            // Reload the page to reflect the changes
-            location.reload();
+            // Implement delete functionality if needed
+            console.log('Deleting order at index', index);
         }
     </script>
 </body>

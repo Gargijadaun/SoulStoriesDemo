@@ -11,7 +11,7 @@
             padding: 0;
             /* overflow:   hidden; */
             height: 100vh;
-            background: url('./images/bgfirst.png') center/cover no-repeat;
+            background: url('./images/bgfirst.png') center/cover no-repeat fixed;
             background-size: 100% 100%;
         }
 
@@ -140,7 +140,7 @@
 
         function changeBackground() {
             currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
-            bodyElement.style.background = `url('${backgrounds[currentBackgroundIndex]}') center/cover no-repeat`;
+            bodyElement.style.background = `url('${backgrounds[currentBackgroundIndex]}') center/cover no-repeat fixed`;
         }
 
         function handleClick() {

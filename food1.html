@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add this in the head section of your HTML -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
     <title>Your Webpage Title</title>
     <style>
         #increaseBtn,
@@ -85,9 +88,9 @@
 
 #orderFormContainer {
     text-align: center;
-    top: 58%;
+    top: 55%;
     position: fixed;
-    left: 5%;
+    left: 19%;
         }
 
         #orderForm {
@@ -120,7 +123,9 @@
     cursor: pointer;
     background-color: transparent;
 }
-
+.food-item{
+    padding: 7px 5px;
+}
        
     </style>
 </head>
@@ -147,7 +152,8 @@
     <!-- <img src="./images/menu5/Place a order.png" alt="Logo" id="selfie" onclick="redirectToPage('food2.html')"> -->
 
     <script>
-    function saveOrder() {
+  
+  function saveOrder() {
     var name = document.getElementById("name").value;
     var roomNumber = document.getElementById("roomNumber").value;
     var phoneNumber = document.getElementById("phoneNumber").value;
@@ -160,10 +166,7 @@
         const quantity = parseInt(foodItemElement.querySelector('.quantity').innerText);
         selectedFoodItems.push({ name: foodItemName, quantity: quantity });
     });
-
-    // Retrieve the existing orders array from localStorage
-    var orders = JSON.parse(localStorage.getItem('orders')) || [];
-
+                                                                         
     // Create a new order object
     var orderData = {
         name: name || '',
@@ -172,20 +175,50 @@
         selectedFoodItems: selectedFoodItems
     };
 
+    // Retrieve the existing orders array from localStorage
+    var orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+    // Convert selectedFoodItems into a string for 'Orders' sheet
+    var selectedFoodItemsString = selectedFoodItems.map(item => `${item.name} (${item.quantity})`).join(', ');
+
     // Add the new order to the orders array
-    orders.push(orderData);
+    orders.push({
+        name: name || '',
+        roomNumber: roomNumber || '',
+        phoneNumber: phoneNumber || '',
+        selectedFoodItems: selectedFoodItemsString
+    });
 
     // Save the updated orders array back to localStorage
     localStorage.setItem('orders', JSON.stringify(orders));
 
+    // Load existing workbook from file, if it exists
+    var existingWorkbook;
+    try {
+        existingWorkbook = XLSX.readFile('mydata.xlsx');
+    } catch (error) {
+        // Handle error if the file doesn't exist or is corrupted
+        console.error("Error loading existing workbook:", error);
+        existingWorkbook = XLSX.utils.book_new();
+    }
+
+    // Update 'Orders' sheet
+    var ordersSheet = XLSX.utils.json_to_sheet(orders);
+    XLSX.utils.book_append_sheet(existingWorkbook, ordersSheet, 'Orders');
+
+    // Update 'FoodItems' sheet
+    var foodItemsSheet = XLSX.utils.json_to_sheet(selectedFoodItems);
+    XLSX.utils.book_append_sheet(existingWorkbook, foodItemsSheet, 'FoodItems');
+
+    // Save the updated workbook back to the same file
+    XLSX.writeFile(existingWorkbook, 'mydata.xlsx');
+
     // Clear the content of the foodItemsContainer
     document.getElementById("foodItemsContainer").innerHTML = '';
     localStorage.removeItem('clickedFoodItems');
+
     // Redirect to the order confirmation page
     window.location.href = "food3.html";
- 
-  
-
 }
 
 

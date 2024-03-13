@@ -376,7 +376,7 @@ z-index: 2;
 
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 468px) {
 
 .container {
  
@@ -399,11 +399,11 @@ z-index: 2;
 }
 .city-weather{
   width: 339px;
-  top: 32px;
+  top: 63px;
   left: 23px;}
 .today-forecasts{
   width: 339px;
-  bottom: 444px;
+  bottom: 421px;
   left: 23px   ;
 }
 .forecast{
@@ -413,7 +413,7 @@ z-index: 2;
 
   bottom: 0px;
   right: 72px;
-  top: 434px;
+  top: 446px;
   height: 272px;
   width: 240px;
  
