@@ -101,12 +101,12 @@
 }
 
     #captured-photo{
-        width: 68vw;
+        width: 81vw;
     height: 56vh;
     object-fit: cover;
     position: absolute;
-    top: 83px;
-    left: 78px;
+    top: 69px;
+    left: 35px;
     z-index: 1;
     }
     .overlay-buttons {
@@ -127,7 +127,7 @@
 </style>
 </head>
 <body>
-    <video id="video" autoplay style="transform: scaleX(1);"></video>
+    <video id="video" autoplay style="transform: scaleX(-1);"></video>
 
 
 <canvas id="canvas"></canvas>
@@ -201,38 +201,32 @@
         closeBtn.style.display = 'none';
     });
 
-    sharePhotoBtn.addEventListener('click', function() {
-    // Create a canvas element to draw the contents of the photo container
-    const containerWidth = photoContainer.offsetWidth;
-    const containerHeight = photoContainer.offsetHeight;
-    const containerCanvas = document.createElement('canvas');
-    containerCanvas.width = containerWidth;
-    containerCanvas.height = containerHeight;
-    const containerContext = containerCanvas.getContext('2d');
-
-    // Draw the overlay image onto the canvas
-  
-
-    // Draw the captured photo onto the canvas
-    containerContext.drawImage(capturedPhoto, 0, 0, containerWidth, containerHeight);
-    containerContext.drawImage(overlayImage, 0, 0, containerWidth, containerHeight);
-    // Convert the canvas content to a data URL representing a PNG image
-    const dataURL = containerCanvas.toDataURL('image/png');
-
-    // Share the data URL
+    sharePhotoBtn.addEventListener("click", async () => {
+  try {
+    // Check if the Web Share API is supported
     if (navigator.share) {
-        navigator.share({
-            title: 'Shared from Face Filter Camera',
-            text: 'Check out my photo!',
-            url: dataURL
-        }).then(() => {
-            console.log('Shared successfully');
-        }).catch((error) => {
-            console.error('Error sharing:', error);
-        });
+      // Capture the photo container using html2canvas
+      const containerCanvas = await html2canvas(photoContainer);
+
+      // Convert containerCanvas to blob
+      containerCanvas.toBlob(async (containerBlob) => {
+        const shareData = {
+          title: "Check out my photo!",
+          files: [
+            new File([containerBlob], "photo_container.png", { type: "image/png" }),
+          ],
+        };
+
+        // Use the Web Share API to share the photo container
+        await navigator.share(shareData);
+      }, "image/png");
     } else {
-        console.error('navigator.share not supported');
+      // Web Share API not supported, provide fallback or inform the user
+      console.log("Web Share API not supported");
     }
+  } catch (error) {
+    console.error("Error sharing photo container:", error);
+  }
 });
 
     downloadPhotoBtn.addEventListener('click', function() {
