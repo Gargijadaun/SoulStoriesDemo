@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Webpage Title</title>
     <style>
-       body {
+   body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    /* overflow: hidden; */ /* Remove this line */
     height: 100vh;
     background: url('./images/menubg.png') center/cover no-repeat fixed;
     background-size: 100% 100%;
 }
-
 
         #back {
             width: 8%;
@@ -57,6 +56,15 @@
     left: 50%;
     transform: translateX(-50%);
         }
+        @media screen and (min-width: 503px) and (orientation: portrait) and (min-height: 695px) {
+            #img4 {
+    width: 96%;
+    position: absolute;
+    bottom: -9%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+}
     </style>
 </head>
 <body>
