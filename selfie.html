@@ -17,10 +17,12 @@
         overflow: hidden; /* Hide overflow to prevent scrolling */
     }
     #video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* Flip horizontally */
+}
+
     #canvas {
         position: absolute;
         top: 0;
@@ -59,7 +61,7 @@
         height: 80px;
     }
     #capture-btn {
-        bottom: 135px;
+        bottom: 99px;
         left: 50%;
         transform: translateX(-50%);
     }
@@ -127,7 +129,7 @@
 </style>
 </head>
 <body>
-    <video id="video" autoplay style="transform: scaleX(-1);"></video>
+    <video id="video" autoplay ></video>
 
 
 <canvas id="canvas"></canvas>
