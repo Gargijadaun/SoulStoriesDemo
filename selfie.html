@@ -103,7 +103,7 @@
 }
 
    #captured-photo {
-    width: 81vw;
+    width: 100vw;
     height: 56vh;
     object-fit: cover;
     position: absolute;
@@ -233,36 +233,42 @@
   }
 });
 
-    downloadPhotoBtn.addEventListener('click', function() {
-    // Create a canvas element to draw the contents of the photo container
-    const containerWidth = photoContainer.offsetWidth;
-    const containerHeight = photoContainer.offsetHeight;
-    const containerCanvas = document.createElement('canvas');
-    containerCanvas.width = containerWidth;
-    containerCanvas.height = containerHeight;
-    const containerContext = containerCanvas.getContext('2d');
+downloadPhotoBtn.addEventListener('click', async () => {
+  try {
+    const containerCanvas = await html2canvas(photoContainer);
+
+    // Flip the canvas horizontally
+    //containerContext.scale(-1, 1);
+   // containerContext.translate(-containerWidth, 0);
 
     // Draw the overlay image onto the canvas
-   
+
+
     // Draw the captured photo onto the canvas
-    containerContext.drawImage(capturedPhoto, 0, 0, containerWidth, containerHeight);
-    containerContext.drawImage(overlayImage, 0, 0, containerWidth, containerHeight);
+    // containerContext.drawImage(capturedPhoto, 0, 0, containerWidth, containerHeight);
+    // containerContext.drawImage(overlayImage, 0, 0, containerWidth, containerHeight);
 
+    // Convert the canvas content to a blob
+    containerCanvas.toBlob(async (containerBlob) => {
+      // Create a file with the blob
+      const photoFile = new File([containerBlob], "photo_container.png", { type: "image/png" });
 
-    // Convert the canvas content to a data URL representing a PNG image
-    const dataURL = containerCanvas.toDataURL('image/png');
+      // Create a temporary anchor element to trigger the download
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(photoFile);
+      downloadLink.download = 'photo_container.png';
 
-    // Create a temporary anchor element to trigger the download
-    const downloadLink = document.createElement('a');
-    downloadLink.href = dataURL;
-    downloadLink.download = 'photo_container.png';
+      // Simulate a click on the anchor element to trigger the download
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
 
-    // Simulate a click on the anchor element to trigger the download
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+      // Clean up the temporary anchor element
+      document.body.removeChild(downloadLink);
+    });
+  } catch (error) {
+    console.error("Error downloading photo container:", error);
+  }
 });
-
 
 </script>
 </body>
